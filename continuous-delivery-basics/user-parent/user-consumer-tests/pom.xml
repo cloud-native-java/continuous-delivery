@@ -11,7 +11,7 @@
         <groupId>cnj</groupId>
         <artifactId>user-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        </parent>
+    </parent>
 
     <modules>
         <module>account-consumer</module>

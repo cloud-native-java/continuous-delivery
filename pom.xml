@@ -65,7 +65,7 @@
             <url>https://cloudnativejava.artifactoryonline.com/cloudnativejava/libs-release</url>
         </repository>
         <repository>
-            <snapshots/>
+            <snapshots />
             <id>snapshots</id>
             <name>libs-snapshot</name>
             <url>https://cloudnativejava.artifactoryonline.com/cloudnativejava/libs-snapshot</url>
@@ -81,11 +81,10 @@
             <url>https://cloudnativejava.artifactoryonline.com/cloudnativejava/plugins-release</url>
         </pluginRepository>
         <pluginRepository>
-            <snapshots/>
+            <snapshots />
             <id>snapshots</id>
-            <name>plugins-snapshot</name>
-            <url>https://cloudnativejava.artifactoryonline.com/cloudnativejava/plugins-snapshot
-            </url>
+            <name>plugins-release</name>
+            <url>https://cloudnativejava.artifactoryonline.com/cloudnativejava/plugins-release</url>
         </pluginRepository>
     </pluginRepositories>
 </project>
