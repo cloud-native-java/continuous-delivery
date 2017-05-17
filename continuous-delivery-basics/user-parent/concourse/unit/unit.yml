@@ -7,13 +7,10 @@ image_resource:
     tag: alpine
 inputs:
 - name: user-microservice
-outputs:
-- name: artifact
 run:
   path: sh
   args:
   - -exc
   - |
-    cd user-microservice \
-    && mvn clean package -DskipDockerBuild \
-    && mv user-parent/cd-user-microservice/target/user-microservice*.jar ../release/user-microservice.jar
+    cd user-microservice/user-parent/cd-user-microservice \
+    && mvn clean package

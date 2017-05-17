@@ -27,7 +27,7 @@ jobs:
   - get: user-microservice
     trigger: true
   - task: unit
-    file: user-microservice/user-parent/concourse/unit/unit.yml
+    file: user-microservice/continuous-delivery-basics/user-parent/concourse/unit/unit.yml
 - name: integration
   plan:
   - aggregate:
@@ -37,7 +37,7 @@ jobs:
     - get: user-integration
       trigger: true
   - task: consumer-tests
-    file: user-microservice/user-parent/concourse/integration/consumer-tests.yml
+    file: user-microservice/continuous-delivery-basics/user-parent/concourse/integration/consumer-tests.yml
 - name: release
   serial: true
   plan:
@@ -45,7 +45,7 @@ jobs:
         - get: user-microservice
           passed: [integration]
     - task: deploy
-      file: user-microservice/user-parent/concourse/release/release.yml
+      file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/release.yml
     - put: final-release
       params:
         from: deploy/release/target/*.jar
