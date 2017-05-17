@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AccountApplication.class)
-@AutoConfigureStubRunner(ids = {"cnj:user-microservice:+:stubs:8081"}, workOffline = true) // <1>
+@AutoConfigureStubRunner(ids = {"cnj:cd-user-microservice:+:stubs:8081"}, workOffline = true) // <1>
 public class ConsumerDrivenTests {
 
     @Autowired
