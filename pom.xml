@@ -12,6 +12,7 @@
     </parent>
     <artifactId>continuous-delivery</artifactId>
     <modules>
+        <module>continuous-delivery-basics</module>
     </modules>
     <build>
         <plugins>
