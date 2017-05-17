@@ -12,5 +12,5 @@ run:
   args:
   - -exc
   - |
-    cd user-microservice/user-parent/cd-user-microservice \
+    cd user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice \
     && mvn clean package
