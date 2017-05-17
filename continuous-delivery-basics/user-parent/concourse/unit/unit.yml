@@ -6,7 +6,7 @@ image_resource:
     repository: maven
     tag: alpine
 inputs:
-- name: service-core
+- name: user-microservice
 outputs:
 - name: artifact
 run:
@@ -14,6 +14,6 @@ run:
   args:
   - -exc
   - |
-    cd service-core \
+    cd user-microservice \
     && mvn clean package -DskipDockerBuild \
-    && mv cqrs-block/github-event-core/target/github-event-core*.jar ../artifact/github-event-core.jar
+    && mv user-parent/cd-user-microservice/target/user-microservice*.jar ../release/user-microservice.jar

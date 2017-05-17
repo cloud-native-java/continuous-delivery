@@ -1,0 +1,51 @@
+
+---
+resources:
+- name: user-microservice
+  type: git
+  source:
+    uri: https://github.com/cloud-native-java/continuous-delivery
+    branch: master
+    paths:
+    - ./continuous-delivery-basics/user-parent/cd-user-microservice
+- name: user-integration
+  type: git
+  source:
+    uri: https://github.com/cloud-native-java/continuous-delivery
+    branch: master
+    paths:
+    - ./continuous-delivery-basics/user-parent/user-consumer-tests
+- name: final-release
+  type: s3
+  source:
+    bucket: concourse-releases
+    regex: release-(.*).jar
+jobs:
+- name: unit
+  max_in_flight: 1
+  plan:
+  - get: user-microservice
+    trigger: true
+  - task: unit
+    file: user-microservice/user-parent/concourse/unit/unit.yml
+- name: integration
+  plan:
+  - aggregate:
+    - get: user-microservice
+      trigger: true
+      passed: [unit]
+    - get: user-integration
+      trigger: true
+  - task: consumer-tests
+    file: user-microservice/user-parent/concourse/integration/consumer-tests.yml
+- name: release
+  serial: true
+  plan:
+    - aggregate:
+        - get: user-microservice
+          passed: [integration]
+    - task: deploy
+      file: user-microservice/user-parent/concourse/release/release.yml
+    - put: final-release
+      params:
+        from: deploy/release/target/*.jar
