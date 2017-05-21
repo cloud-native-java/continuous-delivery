@@ -9,10 +9,13 @@ image_resource:
     tag: alpine
 inputs:
 - name: account-microservice
+outputs:
+- name: release
 run:
   path: sh
   args:
   - -exc
   - |
     cd account-microservice/continuous-delivery-basics/account-parent/cd-account-microservice \
-    && mvn clean package
+    && mvn clean package \
+    && mv target/cd-account-microservice.jar ../../../../release/cd-account-microservice.jar \

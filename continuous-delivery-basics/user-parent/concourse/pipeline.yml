@@ -14,7 +14,7 @@ resources:
     branch: master
     paths:
     - ./continuous-delivery-basics/user-parent/cd-user-microservice
-- name: user-integration
+- name: consumer-tests
   type: git
   source:
     uri: https://github.com/cloud-native-java/continuous-delivery
@@ -32,10 +32,10 @@ resources:
   type: semver
   source:
     driver: git
-    initial_version: 1.0.0-SNAPSHOT.0
+    initial_version: 1.0.0-RC.0
     uri: git@github.com:cloud-native-java/continuous-delivery.git
     branch: version
-    file: version
+    file: user-microservice
     private_key: {{git-private-key}}
 - name: cf-deploy-release
   type: cf
@@ -65,7 +65,7 @@ jobs:
     - get: user-microservice
       trigger: true
       passed: [unit]
-    - get: user-integration
+    - get: consumer-tests
       trigger: true
   - get: version
     params: { pre: SNAPSHOT }
@@ -75,9 +75,9 @@ jobs:
     params:
       file: release/cd-user-microservice.jar
       pom_file: user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice/pom.xml
-      version_file: version/version
+      version_file: version/user-microservice
   - put: version
-    params: { file: version/version }
+    params: { file: version/user-microservice }
 - name: release
   serial: true
   plan:

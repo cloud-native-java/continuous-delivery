@@ -25,10 +25,10 @@ resources:
   type: semver
   source:
     driver: git
-    initial_version: 1.0.0-SNAPSHOT.0
+    initial_version: 1.0.0-RC.0
     uri: git@github.com:cloud-native-java/continuous-delivery.git
     branch: version
-    file: version
+    file: account-microservice
     private_key: {{git-private-key}}
 - name: cf-deploy-release
   type: cf
