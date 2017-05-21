@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-fly -t lite set-pipeline -p account-microservice -c pipeline.yml -l .pipeline-config.yml
+fly -t lite set-pipeline -p user-microservice -c pipeline.yml -l .pipeline-config.yml

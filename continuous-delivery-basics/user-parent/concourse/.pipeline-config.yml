@@ -3,3 +3,6 @@ pws-username: replace
 pws-password: replace
 pws-org: replace
 pws-space: replace
+artifactory-username: replace
+artifactory-password: replace
+git-private-key: replace

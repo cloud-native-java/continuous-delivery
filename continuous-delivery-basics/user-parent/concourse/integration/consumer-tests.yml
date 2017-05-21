@@ -1,3 +1,5 @@
+# This task will run the integration tests and consumer-driven contract tests of
+# the microservice and its consumers.
 ---
 platform: linux
 image_resource:
@@ -7,6 +9,8 @@ image_resource:
     tag: alpine
 inputs:
 - name: user-integration
+outputs:
+- name: release
 run:
   path: sh
   args:
@@ -16,3 +20,4 @@ run:
     && mvn clean install -DskipTests \
     && cd ../user-consumer-tests \
     && mvn clean package
+    && mv ../cd-user-microservice/target/cd-user-microservice.jar ~/release/cd-user-microservice.jar

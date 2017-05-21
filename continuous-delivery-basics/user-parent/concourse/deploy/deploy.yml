@@ -1,4 +1,4 @@
-# This task will prepare the versioned release artifact before deploying
+# This task will deploy the versioned release from the artifactory repository
 # to Cloud Foundry.
 ---
 platform: linux

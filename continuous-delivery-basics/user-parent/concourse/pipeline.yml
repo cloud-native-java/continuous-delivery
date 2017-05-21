@@ -1,5 +1,11 @@
-
+# Concourse pipeline definition for the user service.
 ---
+resource_types:
+- name: maven-resource
+  type: docker-image
+  source:
+    repository: patrickcrocker/maven-resource
+    tag: latest
 resources:
 - name: user-microservice
   type: git
@@ -15,11 +21,22 @@ resources:
     branch: master
     paths:
     - ./continuous-delivery-basics/user-parent/user-consumer-tests
-- name: final-release
-  type: s3
+- name: snapshot
+  type: maven-resource
   source:
-    bucket: concourse-releases
-    regex: release-(.*).jar
+    url: https://cloudnativejava.jfrog.io/cloudnativejava/libs-snapshot-local/
+    artifact: cnj:cd-user-microservice:jar
+    username: {{artifactory-username}}
+    password: {{artifactory-password}}
+- name: version
+  type: semver
+  source:
+    driver: git
+    initial_version: 1.0.0-SNAPSHOT.0
+    uri: kbastani@github.com:cloud-native-java/continuous-delivery.git
+    branch: version
+    file: version
+    private_key: {{git-private-key}}
 jobs:
 - name: unit
   max_in_flight: 1
@@ -36,6 +53,14 @@ jobs:
       passed: [unit]
     - get: user-integration
       trigger: true
+    - get: version
+  - put: snapshot
+    params:
+      file: release/cd-user-microservice.jar
+      pom_file: user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice/pom.xml
+      version_file: 1.0.0-SNAPSHOT/maven-metadata.xml
+  - put: version
+    params: { file: 1.0.0-SNAPSHOT/maven-metadata.xml }
   - task: consumer-tests
     file: user-microservice/continuous-delivery-basics/user-parent/concourse/integration/consumer-tests.yml
 - name: release
@@ -46,6 +71,3 @@ jobs:
           passed: [integration]
     - task: deploy
       file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/release.yml
-    - put: final-release
-      params:
-        from: deploy/release/target/*.jar
