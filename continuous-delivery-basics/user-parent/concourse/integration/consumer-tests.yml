@@ -20,4 +20,4 @@ run:
     && mvn clean install -DskipTests \
     && cd ../user-consumer-tests \
     && mvn clean package
-    && mv ../cd-user-microservice/target/cd-user-microservice.jar ~/release/cd-user-microservice.jar
+    && mv ../cd-user-microservice/target/cd-user-microservice.jar ../../../release/cd-user-microservice.jar
