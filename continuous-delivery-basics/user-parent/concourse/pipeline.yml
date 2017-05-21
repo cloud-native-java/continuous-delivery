@@ -24,7 +24,7 @@ resources:
 - name: snapshot
   type: maven-resource
   source:
-    url: https://cloudnativejava.jfrog.io/cloudnativejava/libs-snapshot-local/
+    url: https://cloudnativejava.jfrog.io/cloudnativejava/libs-release-local/
     artifact: cnj:cd-user-microservice:jar
     username: {{artifactory-username}}
     password: {{artifactory-password}}
@@ -33,10 +33,19 @@ resources:
   source:
     driver: git
     initial_version: 1.0.0-SNAPSHOT.0
-    uri: https://github.com/cloud-native-java/continuous-delivery
+    uri: git@github.com:cloud-native-java/continuous-delivery.git
     branch: version
     file: version
     private_key: {{git-private-key}}
+- name: cf-deploy-release
+  type: cf
+  source:
+    api: https://api.run.pivotal.io
+    username: {{cf-username}}
+    password: {{cf-password}}
+    organization: {{cf-org}}
+    space: {{cf-space}}
+    skip_cert_check: false
 jobs:
 - name: unit
   max_in_flight: 1
@@ -53,21 +62,25 @@ jobs:
       passed: [unit]
     - get: user-integration
       trigger: true
+  - get: version
+    params: { pre: SNAPSHOT }
   - task: consumer-tests
     file: user-microservice/continuous-delivery-basics/user-parent/concourse/integration/consumer-tests.yml
+  - put: snapshot
+    params:
+      file: release/cd-user-microservice.jar
+      pom_file: user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice/pom.xml
+      version_file: version/version
+  - put: version
+    params: { file: version/version }
 - name: release
   serial: true
   plan:
-    - aggregate:
-        - get: user-microservice
-          passed: [integration]
-    - get: version
-    - put: snapshot
-      params:
-        file: release/cd-user-microservice.jar
-        pom_file: user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice/pom.xml
-        version_file: 1.0.0-SNAPSHOT/maven-metadata.xml
-    - put: version
-      params: { file: 1.0.0-SNAPSHOT/maven-metadata.xml }
-    - task: deploy
-      file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/release.yml
+  - get: snapshot
+    trigger: true
+    passed: [integration]
+  - put: cf-deploy-release
+    params:
+      manifest: build-output/manifest.yml
+  - task: deploy
+    file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/release.yml
