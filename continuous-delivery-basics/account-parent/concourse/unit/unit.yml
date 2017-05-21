@@ -1,3 +1,5 @@
+# This task will build and run the unit tests specified in the source code
+# of the microservice.
 ---
 platform: linux
 image_resource:

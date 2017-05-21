@@ -1,5 +1,11 @@
-
+# Concourse pipeline definition for the account service.
 ---
+resource_types:
+- name: maven-resource
+  type: docker-image
+  source:
+    repository: patrickcrocker/maven-resource
+    tag: latest
 resources:
 - name: account-microservice
   type: git
@@ -8,18 +14,36 @@ resources:
     branch: master
     paths:
     - ./continuous-delivery-basics/account-parent/cd-account-microservice
-- name: account-integration
+- name: snapshot
+  type: maven-resource
+  source:
+    url: https://cloudnativejava.jfrog.io/cloudnativejava/libs-release-local/
+    artifact: cnj:cd-account-microservice:jar
+    username: {{artifactory-username}}
+    password: {{artifactory-password}}
+- name: version
+  type: semver
+  source:
+    driver: git
+    initial_version: 1.0.0-SNAPSHOT.0
+    uri: git@github.com:cloud-native-java/continuous-delivery.git
+    branch: version
+    file: version
+    private_key: {{git-private-key}}
+- name: cf-deploy-release
+  type: cf
+  source:
+    api: https://api.run.pivotal.io
+    username: {{cf-username}}
+    password: {{cf-password}}
+    organization: {{cf-org}}
+    space: {{cf-space}}
+    skip_cert_check: false
+- name: pipeline-tasks
   type: git
   source:
-    uri: https://github.com/cloud-native-java/continuous-delivery
+    uri: https://github.com/Pivotal-Field-Engineering/pipeline-tasks
     branch: master
-    paths:
-    - ./continuous-delivery-basics/account-parent/account-consumer-tests
-- name: final-release
-  type: s3
-  source:
-    bucket: concourse-releases
-    regex: release-(.*).jar
 jobs:
 - name: unit
   max_in_flight: 1
@@ -34,18 +58,32 @@ jobs:
     - get: account-microservice
       trigger: true
       passed: [unit]
-    - get: account-integration
-      trigger: true
-  - task: consumer-tests
-    file: account-microservice/continuous-delivery-basics/account-parent/concourse/integration/consumer-tests.yml
+  - get: version
+    params: { pre: SNAPSHOT }
+  - put: snapshot
+    params:
+      file: release/cd-account-microservice.jar
+      pom_file: account-microservice/continuous-delivery-basics/account-parent/cd-account-microservice/pom.xml
+      version_file: version/account-microservice
+  - put: version
+    params: { file: version/account-microservice }
 - name: release
   serial: true
   plan:
-    - aggregate:
-        - get: account-microservice
-          passed: [integration]
-    - task: deploy
-      file: account-microservice/continuous-delivery-basics/account-parent/concourse/release/release.yml
-    - put: final-release
-      params:
-        from: deploy/release/target/*.jar
+  - get: snapshot
+    trigger: true
+    passed: [integration]
+  - get: account-microservice
+    passed: [integration]
+  - get: version
+    passed: [integration]
+  - get: pipeline-tasks
+  - task: prepare-manifest
+    file: account-microservice/continuous-delivery-basics/account-parent/concourse/release/prepare.yml
+    params:
+      MF_PATH: ../release-output/cd-account-microservice.jar
+  - task: prepare-release
+    file: account-microservice/continuous-delivery-basics/account-parent/concourse/release/release.yml
+  - put: cf-deploy-release
+    params:
+      manifest: task-output/manifest.yml

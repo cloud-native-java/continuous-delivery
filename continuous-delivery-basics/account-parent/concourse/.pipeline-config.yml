@@ -1,5 +1,11 @@
-pws-api: https://api.run.pivotal.io
-pws-username: replace
-pws-password: replace
-pws-org: replace
-pws-space: replace
+cf-api: https://api.run.pivotal.io
+cf-username: replace
+cf-password: replace
+cf-org: replace
+cf-space: replace
+artifactory-username: replace
+artifactory-password: replace
+git-private-key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  REPLACE
+  -----END RSA PRIVATE KEY-----
