@@ -58,7 +58,7 @@ jobs:
     params:
       file: release/cd-account-microservice.jar
       pom_file: account-microservice/continuous-delivery-basics/account-parent/cd-account-microservice/pom.xml
-      version_file: version/account-microservice
+      version_file: version/version
   - put: version
     params: { file: version/version }
 - name: release

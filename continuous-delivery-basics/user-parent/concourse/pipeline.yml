@@ -75,7 +75,7 @@ jobs:
     params:
       file: release/cd-user-microservice.jar
       pom_file: user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice/pom.xml
-      version_file: version/user-microservice
+      version_file: version/version
   - put: version
     params: { file: version/version }
 - name: release
