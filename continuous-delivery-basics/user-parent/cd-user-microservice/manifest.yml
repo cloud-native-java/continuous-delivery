@@ -3,7 +3,7 @@ applications:
 - name: user-service
   memory: 1024MB
   instances: 1
-  host: cnj-cd-user-service
-  path: user-service-*.jar
+  host: cnj-cd-user-microservice
+  path: target/cd-user-microservice-*.jar
   env:
     SPRING_PROFILES_ACTIVE: cloud

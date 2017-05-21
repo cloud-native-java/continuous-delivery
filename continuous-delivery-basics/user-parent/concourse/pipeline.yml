@@ -6,6 +6,11 @@ resource_types:
   source:
     repository: patrickcrocker/maven-resource
     tag: latest
+- name: pipeline-tasks
+  type: git
+  source:
+    repository: https://github.com/Pivotal-Field-Engineering/pipeline-tasks.git
+    branch: master
 resources:
 - name: user-microservice
   type: git
@@ -84,8 +89,10 @@ jobs:
     - get: snapshot
       trigger: true
       passed: [integration]
+  - task: prepare-manifest
+    file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/prepare.yml
   - task: deploy
     file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/release.yml
   - put: cf-deploy-release
     params:
-      manifest: user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice/manifest.yml
+      manifest: task-output/manifest.yml
