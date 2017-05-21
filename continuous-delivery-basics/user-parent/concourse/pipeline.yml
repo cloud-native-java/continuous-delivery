@@ -53,14 +53,6 @@ jobs:
       passed: [unit]
     - get: user-integration
       trigger: true
-    - get: version
-  - put: snapshot
-    params:
-      file: release/cd-user-microservice.jar
-      pom_file: user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice/pom.xml
-      version_file: 1.0.0-SNAPSHOT/maven-metadata.xml
-  - put: version
-    params: { file: 1.0.0-SNAPSHOT/maven-metadata.xml }
   - task: consumer-tests
     file: user-microservice/continuous-delivery-basics/user-parent/concourse/integration/consumer-tests.yml
 - name: release
@@ -69,5 +61,13 @@ jobs:
     - aggregate:
         - get: user-microservice
           passed: [integration]
+    - get: version
+    - put: snapshot
+      params:
+        file: release/cd-user-microservice.jar
+        pom_file: user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice/pom.xml
+        version_file: 1.0.0-SNAPSHOT/maven-metadata.xml
+    - put: version
+      params: { file: 1.0.0-SNAPSHOT/maven-metadata.xml }
     - task: deploy
       file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/release.yml
