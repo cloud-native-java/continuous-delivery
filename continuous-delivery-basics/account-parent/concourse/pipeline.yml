@@ -45,19 +45,13 @@ resources:
     uri: https://github.com/Pivotal-Field-Engineering/pipeline-tasks
     branch: master
 jobs:
-- name: unit
+- name: build
   max_in_flight: 1
   plan:
   - get: account-microservice
     trigger: true
   - task: unit
     file: account-microservice/continuous-delivery-basics/account-parent/concourse/unit/unit.yml
-- name: integration
-  plan:
-  - aggregate:
-    - get: account-microservice
-      trigger: true
-      passed: [unit]
   - get: version
     params: { pre: RC }
   - put: snapshot
@@ -72,11 +66,11 @@ jobs:
   plan:
   - get: snapshot
     trigger: true
-    passed: [integration]
+    passed: [build]
   - get: account-microservice
-    passed: [integration]
+    passed: [build]
   - get: version
-    passed: [integration]
+    passed: [build]
   - get: pipeline-tasks
   - task: prepare-manifest
     file: account-microservice/continuous-delivery-basics/account-parent/concourse/release/prepare.yml

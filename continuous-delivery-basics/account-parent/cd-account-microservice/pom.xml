@@ -6,6 +6,7 @@
 
     <artifactId>cd-account-microservice</artifactId>
     <packaging>jar</packaging>
+    <version>1.0.0-RC</version>
 
     <parent>
         <groupId>cnj</groupId>
