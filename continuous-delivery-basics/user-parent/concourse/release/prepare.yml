@@ -10,7 +10,7 @@ image_resource:
 params:
   MF_NAME: user-microservice
   MF_DOMAIN: cfapps.io
-  MF_BUILDPACK: https://github.com/cloudfoundry/java-buildpack.git#v3.3.0
+  MF_BUILDPACK: java_buildpack
   MF_HOST: cnj-cd-user-microservice
   MF_INSTANCES: 1
   MF_MEMORY: 1024M

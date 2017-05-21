@@ -93,6 +93,7 @@ jobs:
     file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/prepare.yml
     params:
       MF_PATH: ../release-output/cd-user-microservice.jar
+      MF_BUILDPACK: java_buildpack
   - task: prepare-release
     file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/release.yml
   - put: cf-deploy-release

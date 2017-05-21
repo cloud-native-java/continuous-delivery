@@ -76,6 +76,7 @@ jobs:
     file: account-microservice/continuous-delivery-basics/account-parent/concourse/release/prepare.yml
     params:
       MF_PATH: ../release-output/cd-account-microservice.jar
+      MF_BUILDPACK: java_buildpack
   - task: prepare-release
     file: account-microservice/continuous-delivery-basics/account-parent/concourse/release/release.yml
   - put: cf-deploy-release
