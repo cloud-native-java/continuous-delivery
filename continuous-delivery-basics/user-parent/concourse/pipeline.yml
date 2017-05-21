@@ -34,7 +34,7 @@ resources:
     driver: git
     initial_version: 1.0.0-SNAPSHOT.0
     uri: https://github.com/cloud-native-java/continuous-delivery
-    branch: master
+    branch: version
     file: version
     private_key: {{git-private-key}}
 jobs:
