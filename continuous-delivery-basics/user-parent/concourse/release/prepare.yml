@@ -13,7 +13,7 @@ params:
   MF_HOST: cnj-cd-user-microservice
   MF_INSTANCES: 1
   MF_MEMORY: 1024M
-  MF_PATH: $artifact-path
+  MF_PATH:
 
 inputs:
 - name: pipeline-tasks

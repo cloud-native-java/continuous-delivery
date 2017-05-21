@@ -7,9 +7,13 @@ image_resource:
   source:
     repository: concourse/cf-resource
     tag: latest
+inputs:
+  - name: snapshot
+outputs:
+  - name: release-output
 run:
   path: sh
   args:
   - -exc
   - |
-    ls
+    mv snapshot/cd-user-microservice-**.jar release-output/cd-user-microservice.jar
