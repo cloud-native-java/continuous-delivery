@@ -88,4 +88,4 @@ jobs:
     file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/release.yml
   - put: cf-deploy-release
     params:
-      manifest: build-output/manifest.yml
+      manifest: user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice/manifest.yml
