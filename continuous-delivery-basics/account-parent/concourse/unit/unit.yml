@@ -1,0 +1,16 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: maven
+    tag: alpine
+inputs:
+- name: account-microservice
+run:
+  path: sh
+  args:
+  - -exc
+  - |
+    cd account-microservice/continuous-delivery-basics/account-parent/cd-account-microservice \
+    && mvn clean package
