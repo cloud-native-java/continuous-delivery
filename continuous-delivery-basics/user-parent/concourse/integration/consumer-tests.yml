@@ -8,7 +8,7 @@ image_resource:
     repository: maven
     tag: alpine
 inputs:
-- name: user-integration
+- name: consumer-tests
 outputs:
 - name: release
 run:
@@ -16,7 +16,7 @@ run:
   args:
   - -exc
   - |
-    cd user-integration/continuous-delivery-basics/user-parent/cd-user-microservice \
+    cd consumer-tests/continuous-delivery-basics/user-parent/cd-user-microservice \
     && mvn clean install -DskipTests \
     && mv target/cd-user-microservice.jar ../../../../release/cd-user-microservice.jar \
     && cd ../user-consumer-tests \
