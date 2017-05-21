@@ -79,8 +79,8 @@ jobs:
   - get: snapshot
     trigger: true
     passed: [integration]
+  - task: deploy
+    file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/release.yml
   - put: cf-deploy-release
     params:
       manifest: build-output/manifest.yml
-  - task: deploy
-    file: user-microservice/continuous-delivery-basics/user-parent/concourse/release/release.yml

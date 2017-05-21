@@ -8,7 +8,6 @@ image_resource:
     repository: concourse/cf-resource
     tag: latest
 inputs:
-- name: user-microservice
 - name: release
 run:
   path: sh
