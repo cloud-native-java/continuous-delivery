@@ -7,8 +7,6 @@ image_resource:
   source:
     repository: concourse/cf-resource
     tag: latest
-inputs:
-- name: release
 run:
   path: sh
   args:
