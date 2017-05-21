@@ -68,7 +68,7 @@ jobs:
     - get: consumer-tests
       trigger: true
   - get: version
-    params: { pre: SNAPSHOT }
+    params: { pre: RC }
   - task: consumer-tests
     file: user-microservice/continuous-delivery-basics/user-parent/concourse/integration/consumer-tests.yml
   - put: snapshot

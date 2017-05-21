@@ -59,7 +59,7 @@ jobs:
       trigger: true
       passed: [unit]
   - get: version
-    params: { pre: SNAPSHOT }
+    params: { pre: RC }
   - put: snapshot
     params:
       file: release/cd-account-microservice.jar
