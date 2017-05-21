@@ -77,7 +77,7 @@ jobs:
       pom_file: user-microservice/continuous-delivery-basics/user-parent/cd-user-microservice/pom.xml
       version_file: version/user-microservice
   - put: version
-    params: { file: version/user-microservice }
+    params: { file: version/version }
 - name: release
   serial: true
   plan:

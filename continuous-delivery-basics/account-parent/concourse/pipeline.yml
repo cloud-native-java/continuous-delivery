@@ -60,7 +60,7 @@ jobs:
       pom_file: account-microservice/continuous-delivery-basics/account-parent/cd-account-microservice/pom.xml
       version_file: version/account-microservice
   - put: version
-    params: { file: version/account-microservice }
+    params: { file: version/version }
 - name: release
   serial: true
   plan:
