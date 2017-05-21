@@ -18,6 +18,7 @@ run:
   - |
     cd user-integration/continuous-delivery-basics/user-parent/cd-user-microservice \
     && mvn clean install -DskipTests \
+    && mv target/cd-user-microservice.jar ../../../release/cd-user-microservice.jar \
     && cd ../user-consumer-tests \
-    && mvn clean package \
-    && mv ../cd-user-microservice/target/cd-user-microservice.jar ../../../release/cd-user-microservice.jar
+    && mvn clean package
+
