@@ -10,21 +10,21 @@ resources:
 - name: user-microservice
   type: git
   source:
-    uri: https://github.com/cloud-native-java/continuous-delivery
+    uri: {{git-source-repository-url}}
     branch: master
     paths:
     - ./continuous-delivery-basics/user-parent/cd-user-microservice
 - name: consumer-tests
   type: git
   source:
-    uri: https://github.com/cloud-native-java/continuous-delivery
+    uri: {{git-source-repository-url}}
     branch: master
     paths:
     - ./continuous-delivery-basics/user-parent/user-consumer-tests
 - name: snapshot
   type: maven-resource
   source:
-    url: https://cloudnativejava.jfrog.io/cloudnativejava/libs-release-local/
+    url: {{artifactory-url}}
     artifact: cnj:cd-user-microservice:jar
     username: {{artifactory-username}}
     password: {{artifactory-password}}
@@ -33,14 +33,14 @@ resources:
   source:
     driver: git
     initial_version: 1.0.0-RC.0
-    uri: git@github.com:cloud-native-java/continuous-delivery.git
+    uri: {{git-version-repository-url}}
     branch: version
     file: user-microservice
-    private_key: {{git-private-key}}
+    private_key: {{git-version-private-key}}
 - name: cf-deploy-release
   type: cf
   source:
-    api: https://api.run.pivotal.io
+    api: {{cf-url}}
     username: {{cf-username}}
     password: {{cf-password}}
     organization: {{cf-org}}

@@ -1,11 +1,21 @@
-cf-api: https://api.run.pivotal.io
+# The Cloud Foundry credentials where the microservice will be deployed
+cf-url: https://api.run.pivotal.io
 cf-username: replace
 cf-password: replace
 cf-org: replace
 cf-space: replace
+
+# The Maven repository where versioned artifacts will be published
+artifactory-url: https://cloudnativejava.jfrog.io/cloudnativejava/libs-release-local/
 artifactory-username: replace
 artifactory-password: replace
-git-private-key: |
+
+# The git repository containing the microservice source code
+git-source-repository-url: https://github.com/cloud-native-java/continuous-delivery
+
+# The git repository containing the version file
+git-version-repository-url: git@github.com:cloud-native-java/continuous-delivery.git
+git-version-private-key: |
   -----BEGIN RSA PRIVATE KEY-----
   REPLACE
   -----END RSA PRIVATE KEY-----
